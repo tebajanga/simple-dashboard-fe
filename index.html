@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sample Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+  <h2>Sample Dashboard</h2>
+  <p>Below is the list of the users and their posts</p>
+  
+  <hr />
+  
+  <div id="users">
+    <div class="card w-100 mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Name here</h5>
+        <p class="card-text">Age: </p>
+      </div>
+    </div>
+  </div>
+</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <script type="text/javascript">
+    	// We assume we get that response from the API.
+       let response = {
+		   "data":{
+			  "users":[
+				 {
+					"id":"1",
+					"name":"John Doe",
+					"age":"23",
+					"posts":[
+					   {
+					  "id":"1",
+					  "title":"Post 1 Title",
+					  "body":"Post 1 Body - Donec neque felis, molestie id magna in, accumsan varius neque. Sed eu sodales mi. Pellentesque non sagittis elit. Phasellus varius, arcu quis scelerisque ullamcorper, eros felis fermentum erat, eget consectetur turpis magna eget elit.",
+					  "created_at":"20th January 2023"
+					   },
+					   {
+					  "id":"1",
+					  "title":"Post 2 Title",
+					  "body":"Post 2 Body - Donec neque felis, molestie id magna in, accumsan varius neque. Sed eu sodales mi. Pellentesque non sagittis elit. Phasellus varius, arcu quis scelerisque ullamcorper, eros felis fermentum erat, eget consectetur turpis magna eget elit.",
+					  "created_at":"20th January 2023"
+					   }
+					]
+				 },
+				 {
+					"id":"2",
+					"name":"Jane Doe",
+					"age":"21",
+					"posts":[
+					   {
+					  "id":"5",
+					  "title":"Post 5 Title",
+					  "body":"Post 5 Body - Donec neque felis, molestie id magna in, accumsan varius neque. Sed eu sodales mi. Pellentesque non sagittis elit. Phasellus varius, arcu quis scelerisque ullamcorper, eros felis fermentum erat, eget consectetur turpis magna eget elit.",
+					  "created_at":"20th January 2023"
+					   },
+					   {
+					  "id":"7",
+					  "title":"Post 7 Title",
+					  "body":"Post 7 Body - Donec neque felis, molestie id magna in, accumsan varius neque. Sed eu sodales mi. Pellentesque non sagittis elit. Phasellus varius, arcu quis scelerisque ullamcorper, eros felis fermentum erat, eget consectetur turpis magna eget elit.",
+					  "created_at":"20th January 2023"
+					   },
+					   {
+					  "id":"8",
+					  "title":"Post 8 Title",
+					  "body":"Post 8 Body - Donec neque felis, molestie id magna in, accumsan varius neque. Sed eu sodales mi. Pellentesque non sagittis elit. Phasellus varius, arcu quis scelerisque ullamcorper, eros felis fermentum erat, eget consectetur turpis magna eget elit.",
+					  "created_at":"20th January 2023"
+					   },
+					   {
+					  "id":"9",
+					  "title":"Post 9 Title",
+					  "body":"Post 9 Body - Donec neque felis, molestie id magna in, accumsan varius neque. Sed eu sodales mi. Pellentesque non sagittis elit. Phasellus varius, arcu quis scelerisque ullamcorper, eros felis fermentum erat, eget consectetur turpis magna eget elit.",
+					  "created_at":"20th January 2023"
+					   }
+					]
+				 },
+				 {
+					"id":"3",
+					"name":"Mimi Doe",
+					"age":"32",
+					"posts":[]
+				 }
+			  ]
+		   }
+		}
+	
+	let elements = '';
+	if (response && response.data != undefined && response.data.users != undefined && response.data.users.length > 0) {
+		let users = response.data.users;
+		
+		// Looping users
+		users.forEach((user) => {
+			// Create a new user element and add it to elements
+			// But before closing it, we need to loop for posts too.
+			let user_element = `
+				 <div class="card w-100 mb-3">
+				  <div class="card-body">
+					<h5 class="card-title">${user.name}</h5>
+					<p class="card-text">Age: ${user.age}</p>
+				  `;
+				  
+			
+			// Checking for posts
+			let posts_Accordion_element = `
+					<div class="accordion" id="accordion${user.id}">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${user.id}" aria-expanded="true" aria-controls="collapse${user.id}">
+									${user.name}'s Posts
+								</button>
+							</h2>
+							<div id="collapse${user.id}" class="accordion-collapse collapse" data-bs-parent="#accordion${user.id}">
+								<div class="accordion-body">`;
+			
+			let posts_element = '';
+			if (user.posts != undefined && user.posts.length > 0) {
+				user.posts.forEach((post) => {
+					posts_element += `<div class="card w-100 mb-3">
+							  <div class="card-body">
+								<h5 class="card-title">${post.title}</h5>
+								<p class="card-text">${post.body}</p>
+								<h6><small>${post.created_at}</small></h6>
+							  </div>
+							</div>`;
+				});
+			} else {
+				posts_element = 'There are no posts for this user yet';	
+			}
+			
+			// Add posts elements to posts accordion element
+			posts_Accordion_element += posts_element;
+			
+			posts_Accordion_element += `</div></div></div></div>`;
+			
+			
+			// Add posts accordion element to user element
+			user_element += posts_Accordion_element;
+			
+			// Close user element
+			user_element += `</div></div>`;
+			
+			// Append finalised users element to elements
+			elements += user_element;
+		});
+		
+		// Append elements;
+		$('#users').html(elements);
+	}
+    </script>
+</body>
+</html>
